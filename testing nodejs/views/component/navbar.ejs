@@ -1,0 +1,25 @@
+<nav
+  class="sticky top-0 z-50 py-6 px-8 flex justify-between items-center w-full shadow-md bg-gray-900"
+>
+  <div class="max-w-screen-xl mx-auto flex justify-between items-center w-full">
+    <a href="/" class="text-xl font-bold text-gray-800"
+      ><img src="/img/logo.png" alt="EventTime Logo" class="h-[50px] w-[150px]"
+    /></a>
+    <ul class="flex space-x-6">
+      <li>
+        <a
+          href="/"
+          class="p-2 rounded-md hover:text-gray-700 hover:bg-white hover:font-bold <%= title === 'Home' ? 'text-gray-700 bg-white font-bold' : 'text-white' %>"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          href="/event/list"
+          class="p-2 rounded-md hover:text-gray-700 hover:bg-white hover:font-bold <%= title === 'Event' ? 'text-gray-700 bg-white font-bold' : 'text-white' %>"
+          >Event</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>

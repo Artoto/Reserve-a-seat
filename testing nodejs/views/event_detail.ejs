@@ -1,0 +1,428 @@
+<!--index.ejs-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User | Testing Project</title>
+    <link rel="stylesheet" href="/css/gobole.css" />
+    <!-- jQuery -->
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <!-- เพิ่ม tailwindcss -->
+    <script src="/js/tailwindcss.js"></script>
+    <!-- เพิ่ม CSS ของ DataTables -->
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+    <!-- DataTables JS -->
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/sweetalert2.js"></script>
+  </head>
+  <body
+    class="min-h-screen flex flex-col items-center justify-center bg-gray-200 font-eng"
+  >
+    <%- include('component/navbar.ejs') %>
+    <div
+      class="max-w-[400px] md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-8 my-8 gap-3 flex flex-col lg:flex-row justify-between items-start h-full w-full"
+    >
+      <div
+        class="text-black w-full basis-full md:basis-6/12 lg:basis-8/12 p-3 h-full flex flex-col items-center gap-3 bg-white shadow-lg rounded-lg"
+      >
+        <div class="flex justify-start items-center lg:gap-2 w-full mb-4">
+          <a
+            class="flex justify-start items-center cursor-pointer mr-1"
+            href="/event/list"
+            ><img
+              src="/img/arrow-left-circle.png"
+              alt="icon back"
+              class="w-8 h-8"
+            />
+          </a>
+          <a
+            class="text-md font-medium hover:text-blue-600 text-gray-500"
+            href="/"
+            >Home /</a
+          >
+          <a
+            class="text-md font-medium hover:text-blue-600 text-gray-500"
+            href="/event/list"
+            >Event List /</a
+          >
+          <a
+            class="text-md font-medium hover:text-blue-600 text-gray-500"
+            href="/event/detail/<%= events._id %>"
+            >Event <%= events.et_name %></a
+          >
+        </div>
+
+        <div class="w-full text-left">
+          <h1 class="text-3xl font-bold mb-2"><%= events.et_name %></h1>
+          <div class="flex flex-row items-center justify-start gap-3 w-auto">
+            <span
+              class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center"
+            >
+              <img src="/img/event/clock.png" alt="clock" class="h-5 w-5" />
+              <span class="ml-1">
+                <%= new Date(events.et_create_at).toLocaleString('en-GB', { day:
+                '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit',
+                minute: '2-digit', second: '2-digit', hour12: false }) %>
+              </span>
+            </span>
+
+            <span
+              class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center"
+            >
+              <img src="/img/event/map-pin.png" alt="map-pin" class="h-5 w-5" />
+
+              <span class="ml-1"><%= events.et_location %></span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="relative bg-gradient-to-r from-purple-600 to-blue-600 h-[300px] md:h-[400px] text-white overflow-hidden w-full"
+        >
+          <div class="absolute inset-0">
+            <img
+              src="<%= events.et_image ? `/img/event/${events.et_image}` : '/img/event/default.png' %>"
+              alt="Sunset in the mountains"
+              onerror="this.onerror=null;this.src='/img/event/default.png';"
+              class="md:object-cover md:object-center w-full h-full"
+            />
+            <div class="absolute"></div>
+          </div>
+        </div>
+        <div
+          class="flex justify-between items-center w-full rounded-lg shadow-md"
+        >
+          <div
+            class="bg-white w-full h-full flex justify-start items-start gap-2"
+          >
+            <div
+              class="p-2 border border-gray-300 shadow-lg rounded-lg w-full lg:w-auto text-lg md:text-2xl font-semibold cursor-pointer"
+              id="participantList"
+            >
+              Participant List
+            </div>
+            <div
+              class="p-2 rounded-lg w-full lg:w-auto text-lg md:text-2xl font-semibold <%= (events.et_participant - participants_number_last) > 0? 'cursor-pointer':'cursor-not-allowed' %>"
+              id="registerParticipant"
+            >
+              Register Participant
+            </div>
+            <input
+              type="hidden"
+              id="total_participants"
+              name="total_participants"
+              value="<%= events.et_participant || 0 %>"
+            />
+            <input
+              type="hidden"
+              id="used_participants"
+              name="used_participants"
+              value="<%= participants_number_last || 0 %>"
+            />
+            <input
+              type="hidden"
+              id="remaining_participants"
+              name="remaining_participants"
+              value="<%= (events.et_participant - participants_number_last) || 0 %>"
+            />
+          </div>
+          <% if(userEventId == events._id){ %>
+          <a
+            class="w-[120px] cursor-pointer font-medium text-white bg-blue-600 hover:bg-white hover:text-blue-600 border hover:border-blue-300 px-3 py-2 rounded-lg"
+            href="/event/user-participants/<%= events._id %>"
+            >Join Room</a
+          >
+          <% }else{ %>
+          <a
+            id="join_room"
+            data-id="<%= events._id %>"
+            data-evetnid="<%= userEventId %>"
+            data-participantsid="<%= userParticipantsId %>"
+            class="w-[120px] cursor-pointer text-md font-medium text-white bg-blue-600 hover:bg-white hover:text-blue-600 border hover:border-blue-300 px-3 py-2 rounded-lg"
+            >Join Room</a
+          >
+          <% } %>
+        </div>
+
+        <div
+          class="w-[375px] md:w-auto lg:w-[640px] xl:w-[820px] overflow-x-auto h-auto max-h-[500px] rounded-md shadow-md py-2 px-4"
+          id="table-participant"
+        >
+          <div class="md:flex md:justify-start items-center gap-2 mb-4">
+            <p class="text-lg text-gray-700 font-semibold">
+              Participants Count
+            </p>
+            <div class="pl-3 text-md text-gray-500">
+              Total: <%= events.et_participant || 0 %>,
+            </div>
+            <div class="pl-3 text-md text-gray-500">
+              Use: <%= participants_number_last || 0 %>,
+            </div>
+            <div class="pl-3 text-md text-gray-500">
+              Remaining: <%= (events.et_participant - participants_number_last)
+              || 0 %>
+            </div>
+          </div>
+          <table
+            id="participantTable"
+            class="min-w-full divide-y divide-gray-200 rounded-lg overflow-hidden shadow-lg bg-white text-gray-800 text-base"
+          >
+            <thead
+              class="bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+            >
+              <tr>
+                <th class="p-3 text-left font-semibold">No</th>
+                <th class="p-3 text-left font-semibold">Full Name</th>
+                <!-- <th class="p-3 text-left font-semibold">Mobile Phone Number</th> -->
+                <th class="p-3 text-center font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% if (participants && participants.length > 0) { %> <%
+              participants.forEach((participant, index) => { %>
+              <tr class="hover:bg-blue-50 transition">
+                <td class="p-3"><%= participant.up_no %></td>
+                <td class="p-3"><%= participant.up_full_name %></td>
+                <!-- <td class="p-3"><%= participant.up_phone_number %></td> -->
+                <% if(participant.up_status == 0) { %>
+                <td class="p-3 text-center">
+                  <span
+                    class="px-3 py-1 bg-yellow-100 text-yellow-700 border border-yellow-300 rounded-full text-xs font-semibold"
+                    >Pending</span
+                  >
+                </td>
+                <% } else if(participant.up_status == 1) { %>
+                <td class="p-3 text-center">
+                  <span
+                    class="px-3 py-1 bg-green-100 text-green-700 border border-green-300 rounded-full text-xs font-semibold"
+                    >Approved</span
+                  >
+                </td>
+                <% } else { %>
+                <td class="p-3 text-center">
+                  <span
+                    class="px-3 py-1 bg-red-100 text-red-700 border border-red-300 rounded-full text-xs font-semibold"
+                    >Cancelled</span
+                  >
+                </td>
+                <% } %>
+              </tr>
+              <% }); %> <% } else { %>
+              <tr>
+                <td
+                  colspan="5"
+                  class="p-3 border border-gray-300 text-center text-gray-500"
+                >
+                  No participants registered
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="w-full h-full md:max-h-[500px] hidden rounded-md shadow-md py-2 px-4"
+          id="register-participant"
+        >
+          <form
+            method="post"
+            id="registerForm"
+            class="m-[10px] md:my-10 md:mx-14"
+          >
+            <input
+              type="hidden"
+              id="eventId"
+              name="eventId"
+              value="<%= id %>"
+            />
+
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 md:gap-4 lg:gap-4 mb-4"
+            >
+              <div class="w-full flex flex-col gap-2">
+                <label for="titleName" class="block text-gray-700 mb-1"
+                  >Title Name <small class="text-red-500">*</small></label
+                >
+                <select
+                  id="titleName"
+                  name="titleName"
+                  class="w-full h-[50px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                >
+                  <option value="">Select Title Name</option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Mrs.">Mrs.</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Dr.">Dr.</option>
+                </select>
+                <small class="text-red-500 hidden" id="firstNameError"
+                  >Title Name is required</small
+                >
+              </div>
+              <div class="w-full flex flex-col gap-2">
+                <label for="firstName" class="block text-gray-700 mb-1"
+                  >First Name <small class="text-red-500">*</small></label
+                >
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="Enter First Name"
+                  class="w-full h-[50px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <small class="text-red-500 hidden" id="firstNameError"
+                  >First Name is required</small
+                >
+              </div>
+              <div class="w-full flex flex-col gap-2">
+                <label for="middleName" class="block text-gray-700 mb-1"
+                  >Middle Name</label
+                >
+                <input
+                  type="text"
+                  id="middleName"
+                  name="middleName"
+                  placeholder="Enter Middle Name"
+                  class="w-full h-[50px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div class="w-full flex flex-col gap-2">
+                <label for="lastName" class="block text-gray-700 mb-1"
+                  >Last Name <small class="text-red-500">*</small></label
+                >
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Enter Last Name"
+                  class="w-full h-[50px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <small class="text-red-500 hidden" id="lastNameError"
+                  >Last Name is required</small
+                >
+              </div>
+              <div class="w-full flex flex-col gap-2">
+                <label for="mobilePhone" class="block text-gray-700 mb-1"
+                  >Mobile Phone <small class="text-red-500">*</small></label
+                >
+                <input
+                  type="tel"
+                  id="mobilePhone"
+                  name="mobilePhone"
+                  maxlength="10"
+                  pattern="[0-9]{10}"
+                  placeholder="Enter 10-digit mobile number"
+                  class="w-full h-[50px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <small class="text-red-500 hidden" id="mobilePhoneError"
+                  >Mobile Phone is required</small
+                >
+              </div>
+              <div class="w-full flex flex-col gap-2">
+                <label for="participantNumber" class="block text-gray-700 mb-1"
+                  >Participant Number</label
+                >
+                <input
+                  type="number"
+                  id="participantNumber"
+                  name="participantNumber"
+                  min="1"
+                  value="<%= participants_number_last || 1 %>"
+                  readonly
+                  class="w-full h-[50px] bg-gray-100 px-3 py-2 border border-lg-gray-300 rounded focus:outline-none focus:border focus:border-gray-300"
+                />
+              </div>
+            </div>
+            <div class="flex justify-end items-center">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="p-3 text-black w-full basis-full md:basis-6/12 lg:basis-4/12 h-screen lg:h-[113.5vh] overflow-y-auto flex flex-col justify-start items-start bg-white shadow-lg rounded-lg"
+      >
+        <% if(other.length > 0){ %>
+        <h1 class="text-3xl font-bold mb-4">Activity Other</h1>
+        <div class="flex flex-col gap-4 items-center">
+          <% other.map((event ,key) => { %>
+          <div class="rounded overflow-hidden shadow-lg flex flex-col">
+            <div class="relative">
+              <a href="/event/detail/<%= event._id %>">
+                <img
+                  class="w-full"
+                  src="<%= event.et_image ? `/img/event/${event.et_image}` : '/img/event/default.png' %>"
+                  alt="Sunset in the mountains"
+                  onerror="this.onerror=null;this.src='/img/event/default.png';"
+                />
+                <div
+                  class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"
+                ></div>
+              </a>
+              <a href="/event/detail/<%= event._id %>">
+                <% if(event.use_participants < event.et_participant){ %>
+                <div
+                  class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out"
+                >
+                  <%= event.use_participants %> / <%= event.et_participant %>
+                </div>
+                <% }else {%>
+                <div
+                  class="text-xs absolute top-0 right-0 bg-red-600 px-4 py-2 text-white mt-3 mr-3 hover:bg-white hover:text-red-600 transition duration-500 ease-in-out"
+                >
+                  Full
+                </div>
+                <% }%>
+              </a>
+            </div>
+            <div class="px-6 py-4 mb-auto">
+              <a
+                href="/event/detail/<%= event._id %>"
+                class="font-medium text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out mb-2"
+                ><%= event.et_name %></a
+              >
+              <p class="text-gray-500 text-sm"><%= event.et_description %></p>
+            </div>
+            <div
+              class="px-6 py-3 flex flex-row items-center justify-between bg-gray-100"
+            >
+              <span
+                class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center"
+              >
+                <img src="/img/event/clock.png" alt="clock" class="h-5 w-5" />
+                <span class="ml-1">
+                  <%= new Date(event.et_create_at).toLocaleString('en-GB', {
+                  day: '2-digit', month: '2-digit', year: '2-digit', hour:
+                  '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                  }) %>
+                </span>
+              </span>
+
+              <span
+                class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center"
+              >
+                <img
+                  src="/img/event/map-pin.png"
+                  alt="map-pin"
+                  class="h-5 w-5"
+                />
+
+                <span class="ml-1"><%= event.et_location %></span>
+              </span>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <script src="/js/event_detail.js"></script>
+    <%- include('component/footer.ejs') %>
+  </body>
+</html>

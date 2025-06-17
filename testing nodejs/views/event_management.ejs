@@ -1,0 +1,61 @@
+<!--index.ejs-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User | Testing Project</title>
+    <link rel="stylesheet" href="/css/gobole.css" />
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/tailwindcss.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen font-eng">
+    <div class="grid grid-cols-8 w-dvw h-dvh bg-back-50">
+      <%- include('component/sidebar.ejs') %>
+      <div class="w-full h-full col-span-7">
+        <div
+          class="w-full h-dvw h-full flex flex-col bg-white dark:bg-gray-900"
+        >
+          <%- include('component/header.ejs') %>
+          <div
+            class="text-black w-full basis-full p-3 flex flex-col items-center gap-3 shadow-lg rounded-lg"
+            id="div-event"
+          >
+            <!-- Search Bar -->
+            <div class="flex justify-end items-center w-full">
+              <input
+                id="searchInput"
+                type="text"
+                class="px-4 py-2 w-full md:w-1/2 lg:w-1/3 border border-gray-300 rounded-lg"
+                placeholder="Search for an event..."
+              />
+            </div>
+
+            <!-- Not Found Event -->
+            <div
+              id="eventsNotfound"
+              class="justify-center items-center py-[276px] px-[62px] text-3xl font-semibold hidden"
+            >
+              Not Found Event.
+            </div>
+
+            <!-- Events List Section -->
+            <div
+              id="eventsList"
+              class="container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6 hidden"
+            >
+              <!-- Event Cards will be dynamically generated here -->
+            </div>
+
+            <!-- Pagination Section -->
+            <div id="pagination" class="flex justify-center items-center mt-4">
+              <!-- Pagination buttons will go here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/js/admin/index.js"></script>
+</html>

@@ -1,0 +1,224 @@
+<!--index.ejs-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User | Testing Project</title>
+    <link rel="stylesheet" href="/css/gobole.css" />
+    <!-- jQuery -->
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <!-- เพิ่ม tailwindcss -->
+    <script src="/js/tailwindcss.js"></script>
+    <!-- เพิ่ม CSS ของ DataTables -->
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+    <!-- DataTables JS -->
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/sweetalert2.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen font-eng">
+    <div class="grid grid-cols-8 w-dvw h-dvh bg-back-50">
+      <%- include('component/sidebar.ejs') %>
+      <div class="w-full h-full col-span-7">
+        <div
+          class="w-full h-dvw h-full flex flex-col bg-white dark:bg-gray-900 "
+        >
+          <%- include('component/header.ejs') %>
+          <div
+            class="text-black w-full basis-full px-6 py-4 flex flex-col items-center gap-3 shadow-lg rounded-lg"
+          >
+            <div class="flex justify-start items-center lg:gap-2 w-full mb-4">
+              <a
+                class="flex justify-start items-center cursor-pointer mr-1"
+                href="/admin/event/<%= id %>"
+                ><img
+                  src="/img/arrow-left-circle.png"
+                  alt="icon back"
+                  class="w-8 h-8"
+                />
+              </a>
+              <a
+                class="text-md font-medium hover:text-blue-600 text-gray-500"
+                href="/admin/"
+                >Event /</a
+              >
+              <a
+                class="text-md font-medium hover:text-blue-600 text-gray-500"
+                href="/admin/event/<%= id %>"
+                >Details /</a
+              >
+              <a class="text-md font-medium text-gray-500"
+                ><%= participants.up_full_name %></a
+              >
+            </div>
+            <div
+              class="w-auto lg:w-[700px] px-6 py-6 flex flex-col gap-3 items-start border border-gray-300 rounded-md shadow-md"
+            >
+              <div class="w-full text-left basis-full lg:basis-7/12">
+                <div class="flex justify-start items-center gap-2 w-full">
+                  <h1 class="text-3xl font-bold mb-2">Edit Participants</h1>
+                </div>
+              </div>
+              <div
+                class="w-full h-full md:max-h-[500px] py-2 px-4"
+                id="register-participant"
+              >
+                <form
+                  method="post"
+                  id="editForm"
+                  class="w-full flex flex-col items-start"
+                >
+                  <input
+                    type="hidden"
+                    id="eventId"
+                    name="eventId"
+                    value="<%= id %>"
+                  />
+                  <input
+                    type="hidden"
+                    id="participant_id"
+                    name="participant_id"
+                    value="<%= participant_id %>"
+                  />
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 md:gap-4 lg:gap-4 mb-4 w-full"
+                  >
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="firstName" class="block text-gray-700 mb-1"
+                        >Title Name <small class="text-red-500">*</small></label
+                      >
+                      <select
+                        id="titleName"
+                        name="titleName"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        disabled
+                      >
+                        <option value="<%= parsedFullName.prefix %>">
+                          <%= parsedFullName.prefix %>
+                        </option>
+                      </select>
+                      <small class="text-red-500 hidden" id="firstNameError"
+                        >Title Name is required</small
+                      >
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="firstName" class="block text-gray-700 mb-1"
+                        >First Name <small class="text-red-500">*</small></label
+                      >
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Enter First Name"
+                        value="<%= parsedFullName.firstName %>"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        readonly
+                      />
+                      <small class="text-red-500 hidden" id="firstNameError"
+                        >First Name is required</small
+                      >
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="middleName" class="block text-gray-700 mb-1"
+                        >Middle Name</label
+                      >
+                      <input
+                        type="text"
+                        id="middleName"
+                        name="middleName"
+                        placeholder="Enter Middle Name"
+                        value="<%= parsedFullName.middleName %>"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        readonly
+                      />
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="lastName" class="block text-gray-700 mb-1"
+                        >Last Name <small class="text-red-500">*</small></label
+                      >
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Enter Last Name"
+                        value="<%= parsedFullName.lastName %>"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        readonly
+                      />
+                      <small class="text-red-500 hidden" id="lastNameError"
+                        >Last Name is required</small
+                      >
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="mobilePhone" class="block text-gray-700 mb-1"
+                        >Mobile Phone
+                        <small class="text-red-500">*</small></label
+                      >
+                      <input
+                        type="tel"
+                        id="mobilePhone"
+                        name="mobilePhone"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        placeholder="Enter 10-digit mobile number"
+                        value="<%= participants.up_phone_number %>"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        readonly
+                      />
+                      <small class="text-red-500 hidden" id="mobilePhoneError"
+                        >Mobile Phone is required</small
+                      >
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label
+                        for="participantNumber"
+                        class="block text-gray-700 mb-1"
+                        >Participant Number</label
+                      >
+                      <input
+                        type="number"
+                        id="participantNumber"
+                        name="participantNumber"
+                        min="1"
+                        value="<%= participants.up_no %>"
+                        readonly
+                        class="w-full h-[50px] bg-gray-100 px-3 py-2 border border-lg-gray-300 rounded focus:outline-none focus:border focus:border-gray-300"
+                      />
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                      <label for="firstName" class="block text-gray-700 mb-1"
+                        >Status <small class="text-red-500">*</small></label
+                      >
+                      <select
+                        id="status"
+                        name="status"
+                        class="w-full h-[50px] px-3 py-2 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      >
+                        <option value="0" <%= participants.up_status == 0 ? 'selected' : '' %>>Pending</option>
+                        <option value="1" <%= participants.up_status == 1 ? 'selected' : '' %>>Approved</option>
+                        <option value="2" <%= participants.up_status == 2 ? 'selected' : '' %>>Cancelled</option>
+                      </select>
+                      <small class="text-red-500 hidden" id="firstNameError"
+                        >Status is required</small
+                      >
+                    </div>
+                  </div>
+                  <div class="flex justify-end items-center mt-3 w-full">
+                    <button
+                      type="submit"
+                      class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+                    >
+                      Confrim
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/js/admin/edit_user_participants.js"></script>
+</html>

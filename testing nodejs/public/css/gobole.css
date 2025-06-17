@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @font-face สำหรับ IBM Plex Sans Thai */
+@font-face {
+  font-family: "IBM Plex Sans Thai";
+  src: url("/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Thai";
+  src: url("/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Medium.ttf")
+    format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Thai";
+  src: url("/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-SemiBold.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Thai";
+  src: url("/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Bold.ttf")
+    format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* @font-face สำหรับ Roboto */
+@font-face {
+  font-family: "Roboto";
+  src: url("/font/Roboto/static/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/font/Roboto/static/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/font/Roboto/static/Roboto-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/font/Roboto/static/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* กำหนดฟอนต์ให้แยกตาม class */
+.font-thai {
+  font-family: "IBM Plex Sans Thai", sans-serif;
+}
+
+.font-eng {
+  font-family: "Roboto", sans-serif;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #333 !important;
+  border: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+  background: #ffff !important;
+  margin-left: 0px !important;
+}
+
+a.paginate_button.previous {
+  border-start-start-radius: 8px !important;
+  border-end-start-radius: 8px !important;
+  border: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+}
+a.paginate_button.next {
+  border-start-end-radius: 8px !important;
+  border-end-end-radius: 8px !important;
+  border: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+  margin-left: 0px !important;
+}
+
+.swal2-validation-message {
+  background-color: #fecaca;
+  color: #ef4444;
+  border-radius: 20px;
+  padding: 1.25rem;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  @media (min-width: 1024px) {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    margin-left: 50px !important;
+    margin-right: 50px !important;
+  }
+}

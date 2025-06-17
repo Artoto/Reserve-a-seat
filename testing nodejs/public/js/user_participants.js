@@ -1,0 +1,68 @@
+$(document).ready(function () {
+  let used_participants = parseInt($(`#used_participants`).val(), 10);
+  if (used_participants > 0) {
+    $("#participantTable").DataTable({
+      responsive: true,
+      autoWidth: false,
+      language: {
+        search: "", // remove default label
+        searchPlaceholder: "Search participants...",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        paginate: {
+          previous: "< Back",
+          next: "Next >",
+        },
+      },
+      pageLength: 10,
+      lengthMenu: [10, 20, 50],
+      dom: '<"flex flex-wrap items-center justify-between mb-2"lf>tip',
+      initComplete: function () {
+        // Custom CSS for search box: add border, rounded, shadow, etc.
+        const searchBox = $(this.api().table().container()).find(
+          "div.dataTables_filter input"
+        );
+        searchBox.addClass(
+          "border-2 border-blue-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base shadow-sm bg-white text-gray-700"
+        );
+        searchBox.attr(
+          "style",
+          "width: 250px; max-width: 100%;  border-radius: 8px !important; padding: 8px !important;"
+        );
+        // Custom CSS for lengthMenu select
+        const lengthMenu = $(this.api().table().container()).find(
+          "div.dataTables_length select"
+        );
+        lengthMenu.addClass(
+          "border-2 border-blue-400 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base bg-white text-gray-700"
+        );
+        lengthMenu.attr("style", "border-radius: 8px !important;");
+        // Custom CSS for pagination
+        const paginate = $(this.api().table().container()).find(
+          "div.dataTables_paginate span.paginate_button, div.dataTables_paginate a.paginate_button"
+        );
+        paginate.addClass(
+          "border-2 border-blue-400 rounded-lg px-3 py-1 bg-white text-blue-600 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        );
+
+        // Custom CSS for previous button
+        const prevBtn = $(this.api().table().container()).find(
+          "a.paginate_button.previous"
+        );
+        prevBtn.attr(
+          "style",
+          "border-start-start-radius: 8px !important; border-end-start-radius: 8px !important;border: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;"
+        );
+
+        // Custom CSS for next button
+        const nextBtn = $(this.api().table().container()).find(
+          "a.paginate_button.next"
+        );
+        nextBtn.attr(
+          "style",
+          "border-start-end-radius: 8px !important; border-end-end-radius: 8px !important;border: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1)) !important; margin-left: 0px !important;"
+        );
+      },
+    });
+  }
+});

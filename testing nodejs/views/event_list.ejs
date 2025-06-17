@@ -1,0 +1,88 @@
+<!--index.ejs-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User | Testing Project</title>
+    <link rel="stylesheet" href="/css/gobole.css" />
+    <!-- jQuery -->
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <!-- เพิ่ม tailwindcss -->
+    <script src="/js/tailwindcss.js"></script>
+    <!-- เพิ่ม CSS ของ DataTables -->
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+    <!-- DataTables JS -->
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/sweetalert2.js"></script>
+  </head>
+  <body
+    class="min-h-screen flex flex-col items-center justify-center bg-gray-200 font-eng"
+  >
+    <%- include('component/navbar.ejs') %>
+    <div
+      class="max-w-[400px] md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-8 my-8 gap-3 flex flex-col lg:flex-row justify-between items-start h-full w-full"
+    >
+      <div
+        class="text-black w-full basis-full p-3 flex flex-col items-center gap-3 bg-white shadow-lg rounded-lg"
+        id="div-event"
+      >
+        <div class="flex justify-start items-center lg:gap-2 w-full mb-4">
+          <a
+            class="flex justify-start items-center cursor-pointer mr-1"
+            href="/"
+            ><img
+              src="/img/arrow-left-circle.png"
+              alt="icon back"
+              class="w-8 h-8"
+            />
+          </a>
+          <a
+            class="text-md font-medium hover:text-blue-600 text-gray-500"
+            href="/"
+            >Home /</a
+          >
+          <a
+            class="text-md font-medium hover:text-blue-600 text-gray-500"
+            href="/event/list"
+            >Event List
+          </a>
+        </div>
+        <!-- Search Bar -->
+        <div class="flex justify-end items-center w-full">
+          <input
+            id="searchInput"
+            type="text"
+            class="px-4 py-2 w-full md:w-1/2 lg:w-1/3 border border-gray-300 rounded-lg"
+            placeholder="Search for an event..."
+          />
+        </div>
+
+        <!-- Not Found Event -->
+        <div
+          id="eventsNotfound"
+          class="justify-center items-center py-[276px] px-[62px] text-3xl font-semibold hidden"
+        >
+          Not Found Event.
+        </div>
+
+        <!-- Events List Section -->
+        <div
+          id="eventsList"
+          class="container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6 hidden"
+        >
+          <!-- Event Cards will be dynamically generated here -->
+        </div>
+
+        <!-- Pagination Section -->
+        <div id="pagination" class="flex justify-center items-center mt-4">
+          <!-- Pagination buttons will go here -->
+        </div>
+      </div>
+    </div>
+
+    <%- include('component/footer.ejs') %>
+    <script src="/js/event_list.js"></script>
+  </body>
+</html>

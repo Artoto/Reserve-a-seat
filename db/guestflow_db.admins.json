@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "684ac4e604f28fca3c202ccc"
+  },
+  "am_email": "test123@yopmail.com",
+  "am_password": "$2b$10$gerr3i9qKfjxQpoeT64yuOXI6l2ntTrF5jKWQWz.rBAPa8/0VkWCe",
+  "am_first_name": "test",
+  "am_middle_name": "test",
+  "am_last_name": "test",
+  "am_role": "Super Admin",
+  "am_create_at": {
+    "$date": "2025-06-12T12:12:31.846Z"
+  }
+}]

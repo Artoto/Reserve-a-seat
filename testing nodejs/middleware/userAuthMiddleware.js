@@ -1,0 +1,20 @@
+const RequestLog = require("../models/requestLogModels");
+
+const authMiddleWare = async (req, res, next) => {
+  // บันทึกการขอข้อมูลใน RequestLog
+  await RequestLog.create({
+    requestType: "Web",
+    responseStatusCode: res.statusCode,
+    requestUrl: req.originalUrl,
+    requestMethod: req.method,
+    requestBody: req.body,
+    responseBody: res.locals.data || {},
+    createdAt: new Date(),
+  });
+  if (!req.session.userParticipantsId && !req.session.userEventId) {
+    return res.redirect("/event/list/");
+  }
+  next();
+};
+
+module.exports = authMiddleWare;
